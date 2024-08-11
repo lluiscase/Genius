@@ -12,15 +12,19 @@ O que deve ter no codigo:
 # Genius'''
 
 import random
+import time
 difficulty = 1
 defeat = -1
 win = 0
 
+#Cores usadas no jogo
 colors = ["vermelho","azul","amarelo","verde"]
+#Criando uma lista para receber as resposta do usuário
 reply = []
 
+#O jogo só acabará se defeat chegar a 0 (valor inicial é -1)
 while defeat < 0:
-#O "Randomizador" de cores
+#Função que cria uma lista onde armazenará as cores
     def bot(i=difficulty):
         selection_for_bot = []
         while i > 0:
@@ -33,25 +37,30 @@ while defeat < 0:
     choose = bot()
     for _ in range(len(choose)):
         print("Piscou: {}".format(choose[_]))
+        time.sleep(1.5)
+        #Apagará a linha que mostra a cor, tendo exatos 1.5 segundos para o usuario guardar a resposta
+        print("\033[A\033[K", end="")
         
 
     def verified_reply():
         global difficulty
         global defeat
         global win
-    #Receber a resposta do usuario
+    #Recebe a resposta do usuario
+        print("Responda de acordo com o que foi mostrado (por ordem)")
         for _ in range(len(choose)):
-            player = input(str("Quais foram as cores dadas pelo robo?"))
+            player = input(str())
             reply.append(player)
     #Verificar a resposta
-        reply == choose and (difficulty := difficulty + 1, win := win + 1) or (defeat := defeat + 1)
-        return "Acertou" if reply == choose else "Perdeu"
+        if reply != choose:
+            defeat += 1
+            return "Perdeu"
+        difficulty += 1
+        win += 1
+        return "Acertou"
     resultado = verified_reply()
-    print("Acertos atual: {}".format(win))
-    print("Dificuldade atual: {}".format(difficulty))
+    print("Acertos atual: {}, Dificuldade atual: {}".format(win,difficulty))
     print(resultado)
     reply.clear()
-    
-
 
 
